@@ -1,0 +1,198 @@
+void Trader::OnFrontConnected() {
+  MD_DEBUG_LOG("OnFrontConnected called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  field->rspInfo = nullptr;
+  field->nRequestID = -1;
+  field->data = nullptr;
+  MD_EVENT_CALL(field, ON_FRONT_CONNECTED, 0);
+};
+void Trader::OnFrontDisconnected(int nReason) {
+  MD_DEBUG_LOG("OnFrontDisconnected called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  field->rspInfo = nullptr;
+  field->nRequestID = -1;
+  field->data = nullptr;
+  MD_EVENT_CALL(field, ON_FRONT_DISCONNECTED, 0);
+};
+void Trader::OnHeartBeatWarning(int nTimeLapse) {
+  MD_DEBUG_LOG("OnHeartBeatWarning called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  field->rspInfo = nullptr;
+  field->nRequestID = -1;
+  field->data = nullptr;
+  MD_EVENT_CALL(field, ON_HEART_BEAT_WARNING, 0);
+};
+void Trader::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,CThostFtdcRspInfoField *pRspInfo,int nRequestID,bool bIsLast) {
+  MD_DEBUG_LOG("OnRspUserLogin called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  if (pRspInfo) {
+    CThostFtdcRspInfoField *_pRspInfo = new CThostFtdcRspInfoField();
+    memcpy(_pRspInfo, pRspInfo, sizeof(CThostFtdcRspInfoField));
+    field->rspInfo    = _pRspInfo;
+    } else {
+      field->rspInfo = nullptr;
+    }
+  field->nRequestID = nRequestID;
+  if (pRspUserLogin) {
+      CThostFtdcRspUserLoginField *_info = new CThostFtdcRspUserLoginField();
+      memcpy(_info, pRspUserLogin, sizeof(CThostFtdcRspUserLoginField));
+      field->data = _info;
+    } else {
+      field->data = nullptr;
+    }
+  MD_EVENT_CALL(field, ON_RSP_USER_LOGIN, 0);
+};
+void Trader::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout,CThostFtdcRspInfoField *pRspInfo,int nRequestID,bool bIsLast) {
+  MD_DEBUG_LOG("OnRspUserLogout called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  if (pRspInfo) {
+    CThostFtdcRspInfoField *_pRspInfo = new CThostFtdcRspInfoField();
+    memcpy(_pRspInfo, pRspInfo, sizeof(CThostFtdcRspInfoField));
+    field->rspInfo    = _pRspInfo;
+    } else {
+      field->rspInfo = nullptr;
+    }
+  field->nRequestID = nRequestID;
+  if (pUserLogout) {
+      CThostFtdcUserLogoutField *_info = new CThostFtdcUserLogoutField();
+      memcpy(_info, pUserLogout, sizeof(CThostFtdcUserLogoutField));
+      field->data = _info;
+    } else {
+      field->data = nullptr;
+    }
+  MD_EVENT_CALL(field, ON_RSP_USER_LOGOUT, 0);
+};
+void Trader::OnRspError(CThostFtdcRspInfoField *pRspInfo,int nRequestID,bool bIsLast) {
+  MD_DEBUG_LOG("OnRspError called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  if (pRspInfo) {
+    CThostFtdcRspInfoField *_pRspInfo = new CThostFtdcRspInfoField();
+    memcpy(_pRspInfo, pRspInfo, sizeof(CThostFtdcRspInfoField));
+    field->rspInfo    = _pRspInfo;
+    } else {
+      field->rspInfo = nullptr;
+    }
+  field->nRequestID = nRequestID;
+  field->data = nullptr;
+  MD_EVENT_CALL(field, ON_RSP_ERROR, 0);
+};
+void Trader::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument,CThostFtdcRspInfoField *pRspInfo,int nRequestID,bool bIsLast) {
+  MD_DEBUG_LOG("OnRspSubMarketData called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  if (pRspInfo) {
+    CThostFtdcRspInfoField *_pRspInfo = new CThostFtdcRspInfoField();
+    memcpy(_pRspInfo, pRspInfo, sizeof(CThostFtdcRspInfoField));
+    field->rspInfo    = _pRspInfo;
+    } else {
+      field->rspInfo = nullptr;
+    }
+  field->nRequestID = nRequestID;
+  if (pSpecificInstrument) {
+      CThostFtdcSpecificInstrumentField *_info = new CThostFtdcSpecificInstrumentField();
+      memcpy(_info, pSpecificInstrument, sizeof(CThostFtdcSpecificInstrumentField));
+      field->data = _info;
+    } else {
+      field->data = nullptr;
+    }
+  MD_EVENT_CALL(field, ON_RSP_SUB_MARKET_DATA, 0);
+};
+void Trader::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument,CThostFtdcRspInfoField *pRspInfo,int nRequestID,bool bIsLast) {
+  MD_DEBUG_LOG("OnRspUnSubMarketData called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  if (pRspInfo) {
+    CThostFtdcRspInfoField *_pRspInfo = new CThostFtdcRspInfoField();
+    memcpy(_pRspInfo, pRspInfo, sizeof(CThostFtdcRspInfoField));
+    field->rspInfo    = _pRspInfo;
+    } else {
+      field->rspInfo = nullptr;
+    }
+  field->nRequestID = nRequestID;
+  if (pSpecificInstrument) {
+      CThostFtdcSpecificInstrumentField *_info = new CThostFtdcSpecificInstrumentField();
+      memcpy(_info, pSpecificInstrument, sizeof(CThostFtdcSpecificInstrumentField));
+      field->data = _info;
+    } else {
+      field->data = nullptr;
+    }
+  MD_EVENT_CALL(field, ON_RSP_UN_SUB_MARKET_DATA, 0);
+};
+void Trader::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument,CThostFtdcRspInfoField *pRspInfo,int nRequestID,bool bIsLast) {
+  MD_DEBUG_LOG("OnRspSubForQuoteRsp called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  if (pRspInfo) {
+    CThostFtdcRspInfoField *_pRspInfo = new CThostFtdcRspInfoField();
+    memcpy(_pRspInfo, pRspInfo, sizeof(CThostFtdcRspInfoField));
+    field->rspInfo    = _pRspInfo;
+    } else {
+      field->rspInfo = nullptr;
+    }
+  field->nRequestID = nRequestID;
+  if (pSpecificInstrument) {
+      CThostFtdcSpecificInstrumentField *_info = new CThostFtdcSpecificInstrumentField();
+      memcpy(_info, pSpecificInstrument, sizeof(CThostFtdcSpecificInstrumentField));
+      field->data = _info;
+    } else {
+      field->data = nullptr;
+    }
+  MD_EVENT_CALL(field, ON_RSP_SUB_FOR_QUOTE_RSP, 0);
+};
+void Trader::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument,CThostFtdcRspInfoField *pRspInfo,int nRequestID,bool bIsLast) {
+  MD_DEBUG_LOG("OnRspUnSubForQuoteRsp called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  if (pRspInfo) {
+    CThostFtdcRspInfoField *_pRspInfo = new CThostFtdcRspInfoField();
+    memcpy(_pRspInfo, pRspInfo, sizeof(CThostFtdcRspInfoField));
+    field->rspInfo    = _pRspInfo;
+    } else {
+      field->rspInfo = nullptr;
+    }
+  field->nRequestID = nRequestID;
+  if (pSpecificInstrument) {
+      CThostFtdcSpecificInstrumentField *_info = new CThostFtdcSpecificInstrumentField();
+      memcpy(_info, pSpecificInstrument, sizeof(CThostFtdcSpecificInstrumentField));
+      field->data = _info;
+    } else {
+      field->data = nullptr;
+    }
+  MD_EVENT_CALL(field, ON_RSP_UN_SUB_FOR_QUOTE_RSP, 0);
+};
+void Trader::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData) {
+  MD_DEBUG_LOG("OnRtnDepthMarketData called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  field->rspInfo = nullptr;
+  field->nRequestID = -1;
+  if (pDepthMarketData) {
+      CThostFtdcDepthMarketDataField *_info = new CThostFtdcDepthMarketDataField();
+      memcpy(_info, pDepthMarketData, sizeof(CThostFtdcDepthMarketDataField));
+      field->data = _info;
+    } else {
+      field->data = nullptr;
+    }
+  MD_EVENT_CALL(field, ON_RTN_DEPTH_MARKET_DATA, 0);
+};
+void Trader::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp) {
+  MD_DEBUG_LOG("OnRtnForQuoteRsp called.");
+  TdCbField *field                 = (TdCbField *)malloc(sizeof(TdCbField));
+  uv_work_t *req                   = new uv_work_t;
+  field->rspInfo = nullptr;
+  field->nRequestID = -1;
+  if (pForQuoteRsp) {
+      CThostFtdcForQuoteRspField *_info = new CThostFtdcForQuoteRspField();
+      memcpy(_info, pForQuoteRsp, sizeof(CThostFtdcForQuoteRspField));
+      field->data = _info;
+    } else {
+      field->data = nullptr;
+    }
+  MD_EVENT_CALL(field, ON_RTN_FOR_QUOTE_RSP, 0);
+};

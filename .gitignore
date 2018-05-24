@@ -1,0 +1,6 @@
+/**/node_modules
+/**/napi-log
+.vscode
+.vscode-upload.json
+*.con
+build

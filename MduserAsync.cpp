@@ -1,0 +1,175 @@
+#include "Mduser.h"
+
+void Mduser::AsyncFn(uv_work_t *req){};
+
+void Mduser::AsyncAfterFn(uv_work_t *req) {
+  
+  if (Mduser::isDebug) {
+    std::cout << "[DEBUG in C++]: "
+              << "AsyncAfterFn called." << std::endl;
+  }
+  MdCbField *field = (MdCbField *)req->data;
+  int eventId      = field->eventId;
+  Napi::Env env    = field->mduser->Env();
+  Napi::HandleScope scope(env);
+  Napi::Object obj = Napi::Object::New(env);
+
+  if (eventId == ON_FRONT_CONNECTED) {
+  } else if (eventId == ON_FRONT_DISCONNECTED) {
+    SET_PROPERTY_NUMBER(env, obj, "ErrorCode", field->errCode);
+  } else if (eventId == ON_HEART_BEAT_WARNING) {
+    SET_PROPERTY_NUMBER(env, obj, "ErrorCode", field->errCode);
+  } else if (eventId == ON_RSP_USER_LOGIN) {
+    if (!!field->rspInfo) {
+      CThostFtdcRspInfoField *rspInfo = static_cast<CThostFtdcRspInfoField *>(field->rspInfo);
+      SET_PROPERTY_BUFFER(env, obj, "ErrorMsg", rspInfo->ErrorMsg);
+      SET_PROPERTY_NUMBER(env, obj, "ErrorID", rspInfo->ErrorID);
+    }
+    if (!!field->data) {
+      CThostFtdcRspUserLoginField *info = static_cast<CThostFtdcRspUserLoginField *>(field->data);
+      SET_PROPERTY_STRING(env, obj, "TradingDay", info->TradingDay);
+      SET_PROPERTY_STRING(env, obj, "LoginTime", info->LoginTime);
+      SET_PROPERTY_STRING(env, obj, "BrokerID", info->BrokerID);
+      SET_PROPERTY_STRING(env, obj, "UserID", info->UserID);
+      SET_PROPERTY_BUFFER(env, obj, "SystemName", info->SystemName);
+      SET_PROPERTY_NUMBER(env, obj, "FrontID", info->FrontID);
+      SET_PROPERTY_NUMBER(env, obj, "SessionID", info->SessionID);
+      SET_PROPERTY_STRING(env, obj, "MaxOrderRef", info->MaxOrderRef);
+      SET_PROPERTY_STRING(env, obj, "SHFETime", info->SHFETime);
+      SET_PROPERTY_STRING(env, obj, "DCETime", info->DCETime);
+      SET_PROPERTY_STRING(env, obj, "CZCETime", info->CZCETime);
+      SET_PROPERTY_STRING(env, obj, "FFEXTime", info->FFEXTime);
+      SET_PROPERTY_STRING(env, obj, "INETime", info->INETime);
+    };
+    SET_PROPERTY_NUMBER(env, obj, "nRequestID", field->nRequestID);
+  } else if (eventId == ON_RSP_USER_LOGOUT) {
+    if (!!field->rspInfo) {
+      CThostFtdcRspInfoField *rspInfo = static_cast<CThostFtdcRspInfoField *>(field->rspInfo);
+      SET_PROPERTY_BUFFER(env, obj, "ErrorMsg", rspInfo->ErrorMsg);
+      SET_PROPERTY_NUMBER(env, obj, "ErrorID", rspInfo->ErrorID);
+    }
+    if (!!field->data) {
+      CThostFtdcUserLogoutField *info = static_cast<CThostFtdcUserLogoutField *>(field->data);
+      SET_PROPERTY_STRING(env, obj, "BrokerID", info->BrokerID);
+      SET_PROPERTY_STRING(env, obj, "UserID", info->UserID);
+    };
+    SET_PROPERTY_NUMBER(env, obj, "nRequestID", field->nRequestID);
+  } else if (eventId == ON_RSP_ERROR) {
+    if (!!field->rspInfo) {
+      CThostFtdcRspInfoField *rspInfo = static_cast<CThostFtdcRspInfoField *>(field->rspInfo);
+      SET_PROPERTY_BUFFER(env, obj, "ErrorMsg", rspInfo->ErrorMsg);
+      SET_PROPERTY_NUMBER(env, obj, "ErrorID", rspInfo->ErrorID);
+    }
+    SET_PROPERTY_NUMBER(env, obj, "nRequestID", field->nRequestID);
+  } else if (eventId == ON_RSP_SUB_MARKET_DATA) {
+    if (!!field->rspInfo) {
+      CThostFtdcRspInfoField *rspInfo = static_cast<CThostFtdcRspInfoField *>(field->rspInfo);
+      SET_PROPERTY_BUFFER(env, obj, "ErrorMsg", rspInfo->ErrorMsg);
+      SET_PROPERTY_NUMBER(env, obj, "ErrorID", rspInfo->ErrorID);
+    }
+    if (!!field->data) {
+      CThostFtdcSpecificInstrumentField *info = static_cast<CThostFtdcSpecificInstrumentField *>(field->data);
+      SET_PROPERTY_STRING(env, obj, "InstrumentID", info->InstrumentID);
+    };
+    SET_PROPERTY_NUMBER(env, obj, "nRequestID", field->nRequestID);
+  } else if (eventId == ON_RSP_UN_SUB_MARKET_DATA) {
+    if (!!field->rspInfo) {
+      CThostFtdcRspInfoField *rspInfo = static_cast<CThostFtdcRspInfoField *>(field->rspInfo);
+      SET_PROPERTY_BUFFER(env, obj, "ErrorMsg", rspInfo->ErrorMsg);
+      SET_PROPERTY_NUMBER(env, obj, "ErrorID", rspInfo->ErrorID);
+    }
+    if (!!field->data) {
+      CThostFtdcSpecificInstrumentField *info = static_cast<CThostFtdcSpecificInstrumentField *>(field->data);
+      SET_PROPERTY_STRING(env, obj, "InstrumentID", info->InstrumentID);
+    };
+    SET_PROPERTY_NUMBER(env, obj, "nRequestID", field->nRequestID);
+  } else if (eventId == ON_RSP_SUB_FOR_QUOTE_RSP) {
+    if (!!field->rspInfo) {
+      CThostFtdcRspInfoField *rspInfo = static_cast<CThostFtdcRspInfoField *>(field->rspInfo);
+      SET_PROPERTY_BUFFER(env, obj, "ErrorMsg", rspInfo->ErrorMsg);
+      SET_PROPERTY_NUMBER(env, obj, "ErrorID", rspInfo->ErrorID);
+    }
+    if (!!field->data) {
+      CThostFtdcSpecificInstrumentField *info = static_cast<CThostFtdcSpecificInstrumentField *>(field->data);
+      SET_PROPERTY_STRING(env, obj, "InstrumentID", info->InstrumentID);
+    };
+    SET_PROPERTY_NUMBER(env, obj, "nRequestID", field->nRequestID);
+  } else if (eventId == ON_RSP_UN_SUB_FOR_QUOTE_RSP) {
+    if (!!field->rspInfo) {
+      CThostFtdcRspInfoField *rspInfo = static_cast<CThostFtdcRspInfoField *>(field->rspInfo);
+      SET_PROPERTY_BUFFER(env, obj, "ErrorMsg", rspInfo->ErrorMsg);
+      SET_PROPERTY_NUMBER(env, obj, "ErrorID", rspInfo->ErrorID);
+    }
+    if (!!field->data) {
+      CThostFtdcSpecificInstrumentField *info = static_cast<CThostFtdcSpecificInstrumentField *>(field->data);
+      SET_PROPERTY_STRING(env, obj, "InstrumentID", info->InstrumentID);
+    };
+    SET_PROPERTY_NUMBER(env, obj, "nRequestID", field->nRequestID);
+  } else if (eventId == ON_RTN_DEPTH_MARKET_DATA) {
+    if (!!field->data) {
+      CThostFtdcDepthMarketDataField *info = static_cast<CThostFtdcDepthMarketDataField *>(field->data);
+      SET_PROPERTY_STRING(env, obj, "TradingDay", info->TradingDay);
+      SET_PROPERTY_STRING(env, obj, "InstrumentID", info->InstrumentID);
+      // SET_PROPERTY_STRING(env, obj, "ExchangeID", info->ExchangeID);
+      // SET_PROPERTY_STRING(env, obj, "ExchangeInstID", info->ExchangeInstID);
+      SET_PROPERTY_NUMBER(env, obj, "LastPrice", info->LastPrice);
+      SET_PROPERTY_NUMBER(env, obj, "PreSettlementPrice", info->PreSettlementPrice);
+      SET_PROPERTY_NUMBER(env, obj, "PreClosePrice", info->PreClosePrice);
+      SET_PROPERTY_NUMBER(env, obj, "PreOpenInterest", info->PreOpenInterest);
+      SET_PROPERTY_NUMBER(env, obj, "OpenPrice", info->OpenPrice);
+      SET_PROPERTY_NUMBER(env, obj, "HighestPrice", info->HighestPrice);
+      SET_PROPERTY_NUMBER(env, obj, "LowestPrice", info->LowestPrice);
+      SET_PROPERTY_NUMBER(env, obj, "Volume", info->Volume);
+      SET_PROPERTY_NUMBER(env, obj, "Turnover", info->Turnover);
+      SET_PROPERTY_NUMBER(env, obj, "OpenInterest", info->OpenInterest);
+      // SET_PROPERTY_NUMBER(env, obj, "ClosePrice", info->ClosePrice);
+      // SET_PROPERTY_NUMBER(env, obj, "SettlementPrice", info->SettlementPrice);
+      SET_PROPERTY_NUMBER(env, obj, "UpperLimitPrice", info->UpperLimitPrice);
+      SET_PROPERTY_NUMBER(env, obj, "LowerLimitPrice", info->LowerLimitPrice);
+      // SET_PROPERTY_NUMBER(env, obj, "PreDelta", info->PreDelta);
+      // SET_PROPERTY_NUMBER(env, obj, "CurrDelta", info->CurrDelta);
+      SET_PROPERTY_STRING(env, obj, "UpdateTime", info->UpdateTime);
+      SET_PROPERTY_NUMBER(env, obj, "UpdateMillisec", info->UpdateMillisec);
+      SET_PROPERTY_NUMBER(env, obj, "BidPrice1", info->BidPrice1);
+      SET_PROPERTY_NUMBER(env, obj, "BidVolume1", info->BidVolume1);
+      SET_PROPERTY_NUMBER(env, obj, "AskPrice1", info->AskPrice1);
+      SET_PROPERTY_NUMBER(env, obj, "AskVolume1", info->AskVolume1);
+      // SET_PROPERTY_NUMBER(env, obj, "BidPrice2", info->BidPrice2);
+      // SET_PROPERTY_NUMBER(env, obj, "BidVolume2", info->BidVolume2);
+      // SET_PROPERTY_NUMBER(env, obj, "AskPrice2", info->AskPrice2);
+      // SET_PROPERTY_NUMBER(env, obj, "AskVolume2", info->AskVolume2);
+      // SET_PROPERTY_NUMBER(env, obj, "BidPrice3", info->BidPrice3);
+      // SET_PROPERTY_NUMBER(env, obj, "BidVolume3", info->BidVolume3);
+      // SET_PROPERTY_NUMBER(env, obj, "AskPrice3", info->AskPrice3);
+      // SET_PROPERTY_NUMBER(env, obj, "AskVolume3", info->AskVolume3);
+      // SET_PROPERTY_NUMBER(env, obj, "BidPrice4", info->BidPrice4);
+      // SET_PROPERTY_NUMBER(env, obj, "BidVolume4", info->BidVolume4);
+      // SET_PROPERTY_NUMBER(env, obj, "AskPrice4", info->AskPrice4);
+      // SET_PROPERTY_NUMBER(env, obj, "AskVolume4", info->AskVolume4);
+      // SET_PROPERTY_NUMBER(env, obj, "BidPrice5", info->BidPrice5);
+      // SET_PROPERTY_NUMBER(env, obj, "BidVolume5", info->BidVolume5);
+      // SET_PROPERTY_NUMBER(env, obj, "AskPrice5", info->AskPrice5);
+      // SET_PROPERTY_NUMBER(env, obj, "AskVolume5", info->AskVolume5);
+      SET_PROPERTY_NUMBER(env, obj, "AveragePrice", info->AveragePrice);
+      SET_PROPERTY_STRING(env, obj, "ActionDay", info->ActionDay);
+    };
+  } else if (eventId == ON_RTN_FOR_QUOTE_RSP) {
+    if (!!field->data) {
+      CThostFtdcForQuoteRspField *info = static_cast<CThostFtdcForQuoteRspField *>(field->data);
+      SET_PROPERTY_STRING(env, obj, "TradingDay", info->TradingDay);
+      SET_PROPERTY_STRING(env, obj, "InstrumentID", info->InstrumentID);
+      SET_PROPERTY_STRING(env, obj, "ForQuoteSysID", info->ForQuoteSysID);
+      SET_PROPERTY_STRING(env, obj, "ForQuoteTime", info->ForQuoteTime);
+      SET_PROPERTY_STRING(env, obj, "ActionDay", info->ActionDay);
+      SET_PROPERTY_STRING(env, obj, "ExchangeID", info->ExchangeID);
+    };
+  }
+
+  if (cbMap.find(eventId) != cbMap.end()) {
+    cbMap.find(eventId)->second->Value().Call({env.Null(), obj});
+  }
+
+  delete req->data;
+  delete req;
+  
+};

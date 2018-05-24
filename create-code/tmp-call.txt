@@ -1,0 +1,48 @@
+else if (funcName == "subscribeMarketData") {
+    MD_DEBUG_LOG("call function subscribeMarketData");
+    ReqID++;
+    int ret = this->api->SubscribeMarketData();
+    return Napi::Number::New(info.Env(), ret);
+  }else if (funcName == "unSubscribeMarketData") {
+    MD_DEBUG_LOG("call function unSubscribeMarketData");
+    ReqID++;
+    int ret = this->api->UnSubscribeMarketData();
+    return Napi::Number::New(info.Env(), ret);
+  }else if (funcName == "subscribeForQuoteRsp") {
+    MD_DEBUG_LOG("call function subscribeForQuoteRsp");
+    ReqID++;
+    int ret = this->api->SubscribeForQuoteRsp();
+    return Napi::Number::New(info.Env(), ret);
+  }else if (funcName == "unSubscribeForQuoteRsp") {
+    MD_DEBUG_LOG("call function unSubscribeForQuoteRsp");
+    ReqID++;
+    int ret = this->api->UnSubscribeForQuoteRsp();
+    return Napi::Number::New(info.Env(), ret);
+  }else if (funcName == "reqUserLogin") {
+    MD_DEBUG_LOG("call function reqUserLogin");
+    ReqID++;
+    CThostFtdcReqUserLoginField req;
+    memset(&req, 0, sizeof(CThostFtdcReqUserLoginField));
+  strcpy(req.TradingDay, getString(params, "TradingDay").c_str());
+  strcpy(req.BrokerID, getString(params, "BrokerID").c_str());
+  strcpy(req.UserID, getString(params, "UserID").c_str());
+  strcpy(req.Password, getString(params, "Password").c_str());
+  strcpy(req.UserProductInfo, getString(params, "UserProductInfo").c_str());
+  strcpy(req.InterfaceProductInfo, getString(params, "InterfaceProductInfo").c_str());
+  strcpy(req.ProtocolInfo, getString(params, "ProtocolInfo").c_str());
+  strcpy(req.MacAddress, getString(params, "MacAddress").c_str());
+  strcpy(req.OneTimePassword, getString(params, "OneTimePassword").c_str());
+  strcpy(req.ClientIPAddress, getString(params, "ClientIPAddress").c_str());
+  strcpy(req.LoginRemark, getString(params, "LoginRemark").c_str());
+    int ret = this->api->ReqUserLogin(&req, ReqID);
+    return Napi::Number::New(info.Env(), ret);
+  }else if (funcName == "reqUserLogout") {
+    MD_DEBUG_LOG("call function reqUserLogout");
+    ReqID++;
+    CThostFtdcUserLogoutField req;
+    memset(&req, 0, sizeof(CThostFtdcUserLogoutField));
+  strcpy(req.BrokerID, getString(params, "BrokerID").c_str());
+  strcpy(req.UserID, getString(params, "UserID").c_str());
+    int ret = this->api->ReqUserLogout(&req, ReqID);
+    return Napi::Number::New(info.Env(), ret);
+  }
